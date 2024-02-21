@@ -250,7 +250,7 @@ function Resume() {
         <CvTitle title="Education" theme={theme}></CvTitle>
         <Education
           theme={theme}
-          educationCenter="University of Windsot"
+          educationCenter="University of Windsor"
           educationTitle="Master of Computer Science"
           educationLocation="Ontario, Canada"
           educationDurationPeriod="May 2024 - present"
