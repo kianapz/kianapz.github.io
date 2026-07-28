@@ -1,76 +1,84 @@
-import { useContext } from "react";
-import { ThemeContext } from "../context/Theme";
+import * as fa from "react-icons/fa";
+import { profile } from "../data";
+import Reveal from "./Reveal";
 
-function Hero() {
-  const { theme } = useContext(ThemeContext);
-
-  const commonClasses = "animate-fadeIn text-sm sm:text-md md:text-lg font-Roboto";
-  const textClass = theme === "light" ? "text-black" : "text-slate-200";
-  const pClasses = `${commonClasses} text-center break-words ${textClass}`;
-  const sClasses = `${commonClasses} text-left break-words ${textClass}`;
-  const spanClasses = `${commonClasses} text-center break-words ${theme === "light" ? "" : "text-slate-200"}`;
-
-  return (
-    <div className="animate-fadeIn -mt-16 sm:mt-0 p-10 pb-0 flex justify-center items-center align-middle">
-      <div className="animate-fadeIn grid grid-cols-2 grid-rows-2 items-center justify-center w-full h-[40rem] sm:w-2/3">
-        <img
-          className="justify-self-center col-start-1 col-end-2 row-start-1 row-end-2 w-64 animate-fadeIn"
-          src="./2.png"
-          alt="Desk"
-        />
-        
-        <p className={`${pClasses} col-start-2 col-end-3 row-start-1 row-end-2 w-74`}>
-          Hello! I'm Kiana Pz.<br />
-          <span>I'm currently pursuing my graduate studies and working as a research assistant at the University of Windsor.</span><br />
-          <span>With a strong background in development, I've gained experience as a full-stack developer.</span>
-        </p>
-
-        <div className="col-start-1 col-end-3 row-start-2">
-          <p className={`${sClasses} -mt-16 sm:mt-0`}>
-            <span className={sClasses}>Skills:</span>
-          </p>
-          <ol className="pl-6">
-            <li>
-              <p className={sClasses}>
-                <span className={spanClasses}>Programming Languages:</span>
-                <br />C#, Python, JavaScript, TypeScript;
-              </p>
-            </li>
-            <li>
-              <p className={sClasses}>
-                <span className={spanClasses}>Web Development:</span>
-                <br />HTML, CSS, ASP.NET, React, Vue.js, jQuery, Nuxt.js;
-              </p>
-            </li>
-            <li>
-              <p className={sClasses}>
-                <span className={spanClasses}>Frameworks and Libraries:</span>
-                <br />.NET, Entity Framework, Dapper;
-              </p>
-            </li>
-            <li>
-              <p className={sClasses}>
-                <span className={spanClasses}>Design Patterns and Architectural Concepts:</span>
-                <br />CQRS (Command Query Responsibility Segregation), Mediator Pattern, MVC (Model-View-Controller);
-              </p>
-            </li>
-            <li>
-              <p className={sClasses}>
-                <span className={spanClasses}>API Development:</span>
-                <br />RESTful API Development
-              </p>
-            </li>
-            <li>
-              <p className={sClasses}>
-                <span className={sClasses}>Other:</span>
-                <br />SQL, Git;
-              </p>
-            </li>
-          </ol>
-        </div>
-      </div>
-    </div>
-  );
+interface Props {
+  onNavigate: (id: string) => void;
 }
 
-export default Hero;
+const stats = [
+  { value: "5+", label: "Years Full-Stack" },
+  { value: "Enterprise", label: "SaaS Delivery" },
+  { value: "Published", label: "AI/ML Researcher" },
+  { value: "Client-Facing", label: "Technical Ownership" },
+];
+
+export default function Hero({ onNavigate }: Props) {
+  return (
+    <section
+      id="home"
+      className="snap-start relative w-full min-h-[calc(100vh-4rem)] flex flex-col justify-end overflow-hidden"
+    >
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url(./hero-code.png)" }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/85 to-slate-900/40" />
+
+      <div className="relative z-10 max-w-6xl mx-auto w-full px-6 pt-32">
+        <Reveal>
+          <p className="text-orange-400 text-sm font-semibold tracking-widest uppercase mb-4">
+            {profile.location}
+          </p>
+          <h1 className="font-Roboto font-bold text-white text-4xl sm:text-6xl leading-tight max-w-2xl">
+            Software &amp; <span className="text-orange-400">AI Engineer</span>
+          </h1>
+        </Reveal>
+        <Reveal delay={120}>
+          <p className="mt-6 text-slate-200 text-xl">I'm {profile.name}</p>
+          <p className="mt-2 text-slate-300 max-w-xl">{profile.tagline}</p>
+        </Reveal>
+
+        <Reveal delay={240}>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <button
+              onClick={() => onNavigate("about")}
+              className="bg-orange-500 hover:bg-orange-600 text-slate-900 font-semibold px-6 py-3 rounded-md transition-all hover:-translate-y-0.5 shadow-lg shadow-orange-500/20"
+            >
+              About Me
+            </button>
+            <button
+              onClick={() => onNavigate("experience")}
+              className="border border-slate-300 text-white hover:bg-white/10 font-semibold px-6 py-3 rounded-md transition-all hover:-translate-y-0.5"
+            >
+              See Work Experience
+            </button>
+          </div>
+        </Reveal>
+      </div>
+
+      <Reveal delay={340} className="relative z-10 mt-16">
+        <div className="border-t border-white/10">
+          <div className="max-w-6xl mx-auto px-6 py-6 grid grid-cols-2 sm:grid-cols-4 gap-6">
+            {stats.map((s) => (
+              <div key={s.label}>
+                <p className="text-orange-400 font-Roboto font-bold text-lg sm:text-2xl leading-snug">
+                  {s.value}
+                </p>
+                <p className="text-slate-400 text-xs sm:text-sm mt-1">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Reveal>
+
+      <button
+        onClick={() => onNavigate("about")}
+        aria-label="Scroll to About"
+        className="absolute z-10 left-1/2 -translate-x-1/2 bottom-3 text-slate-300 hover:text-orange-300 animate-bounce"
+      >
+        <fa.FaChevronDown />
+      </button>
+    </section>
+  );
+}

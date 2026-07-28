@@ -1,96 +1,98 @@
-import { ThemeContext } from "../context/Theme";
-import { useContext } from "react";
+import { useState } from "react";
+import * as fa from "react-icons/fa";
+import { projects, ProjectItem } from "../data";
+import Reveal from "./Reveal";
+import SectionHeading from "./SectionHeading";
+import ProjectModal from "./ProjectModal";
 
-interface IProject {
-  title: string;
-  theme: string;
-  paragraph: string;
-  link: string;
-}
+const orgStyles: Record<string, { badge: string; accent: string; pill: string }> = {
+  "Balanced Plus": {
+    badge: "bg-orange-50 text-orange-600",
+    accent: "before:bg-orange-400",
+    pill: "bg-orange-50 text-orange-600 border-orange-200",
+  },
+  RIRA: {
+    badge: "bg-sky-50 text-sky-600",
+    accent: "before:bg-sky-400",
+    pill: "bg-sky-50 text-sky-600 border-sky-200",
+  },
+  "University of Windsor": {
+    badge: "bg-violet-50 text-violet-600",
+    accent: "before:bg-violet-400",
+    pill: "bg-violet-50 text-violet-600 border-violet-200",
+  },
+  "Personal Project": {
+    badge: "bg-emerald-50 text-emerald-600",
+    accent: "before:bg-emerald-400",
+    pill: "bg-emerald-50 text-emerald-600 border-emerald-200",
+  },
+};
 
-function Project(props: IProject): JSX.Element {
-  const pLight = "font-Roboto text-md sm:text-lg text-slate-700  ";
-  const pDark = "font-Roboto text-md sm:text-lg text-slate-200  ";
-  const aLight =
-    "relative inline-block font-Roboto-light text-md sm:text-lg text-slate-900 group ";
-  const aDark =
-    "relative inline-block font-Roboto-light text-md sm:text-lg text-slate-50 group ";
-  const h3Light = "font-Roboto text-2xl text-slate-900  ";
-  const h3Dark = "font-Roboto text-2xl text-slate-50 ";
-
-  const linkHoverLight =
-    "absolute bottom-0 right-0 w-full h-px bg-gradient-to-l from-slate-400 transform origin-right scale-x-0 duration-500 ease-out group-hover:scale-x-100 ";
-
-  const linkHoverDark =
-    "absolute bottom-0 right-0 w-full h-px bg-gradient-to-l from-slate-200 transform origin-right scale-x-0  duration-500 ease-out group-hover:scale-x-100";
-
-  return (
-    <div className="break-all w-full grid gap-y-3">
-      <h3 className={props.theme === "light" ? h3Light : h3Dark}>
-        {props.title}
-      </h3>
-      <p className={props.theme === "light" ? pLight : pDark}>
-        {props.paragraph}
-      </p>
-      <a target="_blank" href={props.link}>
-        <span className={props.theme === "light" ? aLight : aDark}>
-          {props.link}
-          <span
-            className={props.theme === "light" ? linkHoverLight : linkHoverDark}
-          ></span>
-        </span>
-      </a>
-    </div>
-  );
-}
-
-function Projects() {
-  const { theme } = useContext(ThemeContext);
+export default function Projects() {
+  const [active, setActive] = useState<ProjectItem | null>(null);
 
   return (
-    <div className="grid gap-y-8 auto-cols-fr sm:px-32 px-12 py-6">
-      <Project
-        theme={theme}
-        title="Leadership 360 | Multilingual Assessment Platform"
-        paragraph="Worked as a full-stack developer from project initiation with cross-functional team, contributing to a collaborative and agile development environment.
-      back-end technologies: .NET Core, CQRS ,Mediator pattern, Dapper and SQL
-        front-end technologies: Vue.js, Nuxt.js, JavaScript and TypeScript"
-        link="https://assessment.rirais.com/"
-      />
+    <section id="projects" className="snap-start max-w-6xl mx-auto px-6 py-20">
+      <SectionHeading eyebrow="Selected work" title="Projects" />
 
-      <Project
-        theme={theme}
-        title="Navid | Multilingual LMS"
-        paragraph="Deployed it on various servers. Maintained and Added new features.
-        Technologies : ASP.NET MVC and Vue.js"
-        link="https://lms.rirais.com/"
-      />
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {projects.map((p, i) => {
+          const style = orgStyles[p.org] ?? orgStyles["Personal Project"];
+          return (
+            <Reveal key={p.slug} delay={(i % 3) * 90}>
+              <button
+                onClick={() => setActive(p)}
+                className={
+                  "relative text-left w-full bg-slate-50 hover:bg-white hover:shadow-xl hover:-translate-y-1 transition-all rounded-lg p-6 h-full flex flex-col justify-between min-h-[230px] overflow-hidden " +
+                  "before:content-[''] before:absolute before:left-0 before:top-0 before:h-1 before:w-full " +
+                  style.accent
+                }
+              >
+                {p.featured && (
+                  <span className="absolute top-4 right-4 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide text-orange-500">
+                    <fa.FaStar className="text-[10px]" />
+                    Featured
+                  </span>
+                )}
+                <div>
+                  <span className={`inline-block text-[11px] font-semibold px-2.5 py-1 rounded-full mb-3 ${style.badge}`}>
+                    {p.org}
+                  </span>
+                  <p className="font-semibold text-slate-900 mb-2 pr-6">{p.title}</p>
+                  <p className="text-sm text-slate-600">{p.blurb}</p>
+                </div>
+                <div>
+                  <div className="flex flex-wrap gap-1.5 mt-4">
+                    {p.skills.slice(0, 4).map((s) => (
+                      <span
+                        key={s}
+                        className={`text-[11px] border rounded-full px-2.5 py-0.5 ${style.pill}`}
+                      >
+                        {s}
+                      </span>
+                    ))}
+                    {p.skills.length > 4 && (
+                      <span className="text-[11px] text-slate-400 px-1 py-0.5">
+                        +{p.skills.length - 4} more
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center justify-between mt-4">
+                    <span className="text-orange-500 text-xs font-semibold">View details</span>
+                    {p.externalLink ? (
+                      <fa.FaGithub className="text-slate-400" />
+                    ) : (
+                      <span className="text-orange-500">→</span>
+                    )}
+                  </div>
+                </div>
+              </button>
+            </Reveal>
+          );
+        })}
+      </div>
 
-      <Project
-        theme={theme}
-        title="Rira Co Website | Wordpress "
-        paragraph=" Designed and developed a multilingual website, implementing SEO strategies.
-        • Conducted keyword research and applied on-page SEO best practices.
-        • Monitored analytics to track website performance and drive improvements.
-        • Established and achieved Key Performance Indicators (KPIs).
-        • Collaborated closely with the marketing team."
-        link="https://rirais.com"
-      />
-
-      <Project
-        theme={theme}
-        title="Gmine Co Webiste | Wordpress "
-        paragraph="Designed and developed a multilingual website for Ghoshouni Co"
-        link="https://gmineco.ir"
-      />
-<Project
-        theme={theme}
-        title="Parizmine Co Webiste | Wordpress "
-        paragraph=""
-        link="https://parizmine.com"
-      />
-    </div>
+      {active && <ProjectModal project={active} onClose={() => setActive(null)} />}
+    </section>
   );
 }
-
-export default Projects;

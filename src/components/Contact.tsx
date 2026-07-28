@@ -1,56 +1,73 @@
-import { ThemeContext } from "../context/Theme";
-import { useContext } from "react";
 import * as ai from "react-icons/ai";
+import { profile } from "../data";
+import Reveal from "./Reveal";
 
-function Contact() {
-  const { theme } = useContext(ThemeContext);
-  const iconLight: string = "animate-fadeIn text-5xl rounded-[5rem]";
-  const iconDark: string =
-    "text-slate-200 animate-fadeIn text-5xl rounded-[5rem]";
+const rows = [
+  {
+    icon: <ai.AiOutlineMail />,
+    label: "Email",
+    value: profile.email,
+    href: `mailto:${profile.email}`,
+    bg: "bg-orange-500",
+  },
+  {
+    icon: <ai.AiFillLinkedin />,
+    label: "LinkedIn",
+    value: "linkedin.com/in/kiana-pezeshki",
+    href: profile.linkedin,
+    bg: "bg-sky-600",
+  },
+  {
+    icon: <ai.AiFillGithub />,
+    label: "GitHub",
+    value: "github.com/kianapz",
+    href: profile.github,
+    bg: "bg-orange-500",
+  },
+];
 
-  const containerLight: string =
-    "m-auto mt-52 lg:mt-64 p-7 px-42 sm:px-7 flex justify-around align-middle text-center items-center  shadow-slate-400 shadow-md sm:w-2/3 w-3/4 gap-5 sm:gap-0 lg:w-1/2 bg-slate-50 rounded-full duration-500";
-
-  const containerDark: string =
-    "m-auto mt-52 lg:mt-64 p-7 px-42 sm:px-7 flex justify-around align-middle text-center items-center shadow-slate-600 shadow-md sm:w-2/3 w-3/4 gap-5 sm:gap-0 lg:w-1/2 bg-slate-700 rounded-full duration-500";
-  const buttonLight: string =
-    "p-2 rounded-[3rem] shadow-md shadow-slate-400 active:shadow-inner active:shadow-slate-300 transition duration-500";
-  const buttonDark: string =
-    "bg-slate-700/75 p-2 rounded-[3rem] shadow-md shadow-slate-900 active:shadow-inner active:shadow-slate-900 transitionduration-500";
-
+export default function Contact() {
   return (
-    <div
-      key={theme}
-      className={theme === "light" ? containerLight : containerDark}
+    <section
+      id="contact"
+      className="snap-start w-full min-h-[calc(100vh-4rem)] bg-slate-900 flex items-center"
     >
-      {/* <a
-        className={theme === "light" ? buttonLight : buttonDark}
-        href="https://github.com/adkr38"
-        target="_blank"
-      >
-        <ai.AiFillGithub
-          className={theme === "light" ? iconLight : iconDark}
-        ></ai.AiFillGithub>
-      </a> */}
-      <a
-        className={theme === "light" ? buttonLight : buttonDark}
-        href="https://ir.linkedin.com/in/kiana-pezeshki-444335164"
-        target="_blank"
-      >
-        <ai.AiFillLinkedin
-          className={theme === "light" ? iconLight : iconDark}
-        ></ai.AiFillLinkedin>
-      </a>
-      <a
-        className={theme === "light" ? buttonLight : buttonDark}
-        href="mailto:kiana.pezeshki@gmail.com"
-      >
-        <ai.AiFillMail
-          className={theme === "light" ? iconLight : iconDark}
-        ></ai.AiFillMail>
-      </a>
-    </div>
+      <div className="max-w-4xl mx-auto px-6 py-20 w-full">
+        <Reveal>
+          <h2 className="font-Roboto font-bold text-4xl sm:text-5xl">
+            <span className="text-white">CONTACT </span>
+            <span className="text-orange-400">ME</span>
+          </h2>
+          <p className="text-slate-300 mt-4 max-w-lg">
+            Let's build something great together. Open to full-stack and AI-adjacent
+            engineering roles.
+          </p>
+        </Reveal>
+
+        <div className="mt-16 space-y-8">
+          {rows.map((r, i) => (
+            <Reveal key={r.label} delay={i * 100}>
+              <a href={r.href} target={r.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer" className="flex items-center gap-4 group w-fit">
+                <span
+                  className={`w-11 h-11 rounded-md ${r.bg} text-white flex items-center justify-center text-xl transition-transform group-hover:-translate-y-0.5`}
+                >
+                  {r.icon}
+                </span>
+                <span>
+                  <p className="text-slate-400 text-xs">{r.label}</p>
+                  <p className="text-white font-semibold group-hover:text-orange-300 transition-colors">
+                    {r.value}
+                  </p>
+                </span>
+              </a>
+            </Reveal>
+          ))}
+        </div>
+
+        <p className="mt-20 italic text-slate-500 text-sm">
+          Let's Build Something Great Together
+        </p>
+      </div>
+    </section>
   );
 }
-
-export default Contact;

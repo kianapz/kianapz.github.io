@@ -3,10 +3,10 @@
 @tailwind utilities;
 @font-face {
   font-family: "Roboto";
-  src: url("../fonts/Roboto.ttf") format("truetype");
+  src: url("../fonts/Roboto-Regular.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Roboto-light";
-  src: url("../fonts/Roboto-light.ttf") format("truetype");
+  src: url("../fonts/Roboto-Light.ttf") format("truetype");
 }
